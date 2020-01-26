@@ -1,0 +1,9 @@
+http:
+  port: "9094"
+  host: "localhost"
+  
+  
+meet:
+  host: "meeting.zoho.com"
+  path: "/api/private/json/meetings/createMeeting"
+ 

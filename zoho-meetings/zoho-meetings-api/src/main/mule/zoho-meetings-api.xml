@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="zoho-meetings-apiFlow1" doc:id="9a3acc5f-9edb-4e29-a3e8-a7dcbc454490" >
+		<http:listener doc:name="Listener" doc:id="a1582df2-357e-42f0-9b47-8ae4b0bb6a64" config-ref="HTTP_Listener_config1" path="/createMeeting"/>
+		<ee:transform doc:name="get query parameters" doc:id="92979d57-86e5-416d-b3df-16abf083f367" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"apikey": attributes.queryParams.apikey,
+	"authtoken": attributes.queryParams.authtoken,
+	"topic": attributes.queryParams.topic,
+	"participants": attributes.queryParams.participants default null,
+	"sendMail" : attributes.queryParams.sendMail default null,
+	"agenda": attributes.queryParams.agenda default null,
+	"date": attributes.queryParams.date default null
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="720c71d8-0f15-4f8b-a7d5-7676b43dbe24" message="payload is #[payload] date is #[payload.date]"/>
+		<http:request method="POST" doc:name="create meetings" doc:id="837989b3-65cb-4877-855f-ebb78d55cc0f" config-ref="HTTP_Request_configuration" path="${meet.path}">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"apikey" : payload.apikey,
+	"authtoken" : payload.authtoken,
+	"topic" : payload.topic,
+	"participants" : payload.participants,
+	"sendMail" : payload.sendMail,
+	"agenda " : payload.agenda,
+	"date" : payload.date
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="get meetingKey from response" doc:id="79f9c6c7-01a4-4c35-8dd0-71501e762788" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="8691ae57-1911-46da-b82a-a41c877e0426" message="payload after creation of  meetings is #[payload]"/>
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1cee66bb-77a0-4baa-bbb6-43059f5b17cf" >
+				<set-payload value="Errror occured while creating meetings!!" doc:name="ERROR" doc:id="7ebc8514-2129-4957-b755-10f1e3316f07" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
