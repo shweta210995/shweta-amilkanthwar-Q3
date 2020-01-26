@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "a892f3be-1698-48c2-abbb-5e1532989d9e",
+		"name": "zoho meetings",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "meetings api",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://zoho-meetings-api.us-e2.cloudhub.io/createMeeting?apikey=642c2e0430bfec9a170918b64f1e672a&authtoken=18a6779551ea98269c8a09249fabdac7&participants=shweta.amilkanthwar@apisero.com&sendMail=yes&topic=staffbot QBO discussion&ageda=gathering information&date=2020-01-31 10:00",
+					"protocol": "http",
+					"host": [
+						"zoho-meetings-api",
+						"us-e2",
+						"cloudhub",
+						"io"
+					],
+					"path": [
+						"createMeeting"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "642c2e0430bfec9a170918b64f1e672a"
+						},
+						{
+							"key": "authtoken",
+							"value": "18a6779551ea98269c8a09249fabdac7"
+						},
+						{
+							"key": "participants",
+							"value": "shweta.amilkanthwar@apisero.com"
+						},
+						{
+							"key": "sendMail",
+							"value": "yes"
+						},
+						{
+							"key": "topic",
+							"value": "staffbot QBO discussion"
+						},
+						{
+							"key": "ageda",
+							"value": "gathering information"
+						},
+						{
+							"key": "date",
+							"value": "2020-01-31 10:00"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
